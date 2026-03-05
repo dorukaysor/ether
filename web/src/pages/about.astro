@@ -1,0 +1,461 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About">
+  <div class="page-body about-scroll">
+
+    <!-- Aurora orbs — positioned behind all content -->
+    <div class="aurora-backdrop" aria-hidden="true">
+      <span class="aurora-a"></span>
+      <span class="aurora-b"></span>
+      <span class="aurora-c"></span>
+    </div>
+
+    <div class="about-wrap">
+
+      <!-- ─── Section 1: Hero ─────────────────────────────── -->
+      <section class="ab-hero">
+        <span class="eyebrow">[ SYSTEM CLASSIFICATION: IOT COMPANION ]</span>
+        <h1 class="ab-title"><span class="ab-title-e">E</span>.T.H.E.R.</h1>
+        <p class="ab-subtitle">Energy-Tracking &amp; Harmonic Emotive Reporter</p>
+        <p class="ab-body-text">
+          Electricity is invisible. We consume it every day, but we only see the
+          consequences when the bill arrives. E.T.H.E.R. solves this disconnect
+          by turning raw energy data into a living, breathing companion.
+        </p>
+      </section>
+
+      <!-- ─── Section 2: Dual-Node Architecture ───────────── -->
+      <section class="ab-section">
+        <span class="section-label">[ HARDWARE TOPOLOGY ]</span>
+        <div class="node-grid">
+
+          <!-- Sentry -->
+          <div class="glass-card">
+            <div class="card-icon zinc">
+              <!-- Tabler: shield -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />
+              </svg>
+            </div>
+            <div class="card-content">
+              <p class="card-node-label">NODE 01</p>
+              <h3 class="card-title">The Sentry</h3>
+              <p class="card-tag">High-Voltage Monitoring</p>
+              <p class="card-body">
+                Hidden safely near the wall socket, the Sentry is the muscle of the
+                operation. It monitors 220V AC mains using an industrial-grade PZEM-004T
+                sensor. It acts as an automated circuit breaker, ready to cut power
+                instantly via a 5V relay if dangerous overloads are detected. It stays
+                completely offline, broadcasting telemetry via ESP-NOW.
+              </p>
+            </div>
+          </div>
+
+          <!-- Avatar -->
+          <div class="glass-card">
+            <div class="card-icon cyan">
+              <!-- Tabler: robot -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M6 4m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" />
+                <path d="M12 2v2" />
+                <path d="M9 12v9" />
+                <path d="M15 12v9" />
+                <path d="M5 16l4 -2" />
+                <path d="M15 14l4 2" />
+                <path d="M9 18h6" />
+                <path d="M10 8v.01" />
+                <path d="M14 8v.01" />
+              </svg>
+            </div>
+            <div class="card-content">
+              <p class="card-node-label">NODE 02</p>
+              <h3 class="card-title">The Avatar</h3>
+              <p class="card-tag">User Interface</p>
+              <p class="card-body">
+                The friendly face of the system. Powered by an ESP32, this desk-mounted
+                unit receives the Sentry&apos;s telemetry and translates it into physical
+                emotions using a 1.3&Prime; OLED display and a 12-bit NeoPixel Halo. It bridges
+                the physical hardware to the cloud, silently logging data to MongoDB via
+                local WiFi.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ─── Section 3: Emotive Engine ───────────────────── -->
+      <section class="ab-section">
+        <span class="section-label">[ EMOTIVE ENGINE ]</span>
+        <div class="emotion-grid">
+
+          <div class="emotion-card" style="--ec:#06b6d4;">
+            <span class="emotion-dot"></span>
+            <div class="emotion-content">
+              <span class="emotion-name">Harmonic</span>
+              <span class="emotion-range">50 – 300 W</span>
+              <p class="emotion-body">The default state. Energy usage is within the normal, safe range. System is stable and breathing steadily.</p>
+            </div>
+            <span class="emotion-mood">IDLE</span>
+          </div>
+
+          <div class="emotion-card" style="--ec:#ec4899;">
+            <span class="emotion-dot"></span>
+            <div class="emotion-content">
+              <span class="emotion-name">Efficient</span>
+              <span class="emotion-range">&lt; 50 W</span>
+              <p class="emotion-body">Triggered by a sudden drop in wattage or sustained low usage. E.T.H.E.R. rewards eco-friendly behavior with a fast, excited pulse.</p>
+            </div>
+            <span class="emotion-mood">HAPPY</span>
+          </div>
+
+          <div class="emotion-card" style="--ec:#a855f7;">
+            <span class="emotion-dot"></span>
+            <div class="emotion-content">
+              <span class="emotion-name">Strained</span>
+              <span class="emotion-range">&gt;1000 W for &gt;15 min</span>
+              <p class="emotion-body">Usage has exceeded standard thresholds for an extended period. A visual nudge to check for appliances left on.</p>
+            </div>
+            <span class="emotion-mood">FRUSTRATED</span>
+          </div>
+
+          <div class="emotion-card" style="--ec:#ef4444;">
+            <span class="emotion-dot"></span>
+            <div class="emotion-content">
+              <span class="emotion-name">Overload</span>
+              <span class="emotion-range">&gt; 2500 W</span>
+              <p class="emotion-body">Immediate danger. Usage has crossed the critical threshold. The Sentry will trigger the relay cutoff to protect the grid.</p>
+            </div>
+            <span class="emotion-mood">CRITICAL</span>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ─── Section 4: Tech Stack ─────────────────────────── -->
+      <section class="ab-section">
+        <span class="section-label">[ SYSTEM ARCHITECTURE ]</span>
+        <div class="glass-panel">
+          <div class="tech-badges">
+            <span class="tech-badge">ESP32 C++ · PlatformIO</span>
+            <span class="tech-badge">ESP-NOW Protocol</span>
+            <span class="tech-badge">PZEM-004T v3.0</span>
+            <span class="tech-badge">Astro SSR</span>
+            <span class="tech-badge">React.js &amp; Tailwind CSS</span>
+            <span class="tech-badge">MongoDB Atlas</span>
+            <span class="tech-badge">Google Gemini 1.5 Flash</span>
+            <span class="tech-badge">Telegram Bot API</span>
+            <span class="tech-badge">Framer Motion</span>
+            <span class="tech-badge">Recharts</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── Section 5: Credits / Footer ─────────────────── -->
+      <footer class="ab-footer">
+        <p>Developed as a Minor Project - Computer Engineering &amp; IoT</p>
+        <p>Designed to bridge the gap between industrial safety and human-centric design.</p>
+      </footer>
+
+    </div>
+  </div>
+</Layout>
+
+<!-- Extra fonts: Exo 2 (headers) + JetBrains Mono (mono) -->
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  /* ── Scroll wrapper ──────────────────────────────────────── */
+  .about-scroll {
+    overflow-y: auto;
+    position: relative;
+  }
+
+  /* ── Aurora backdrop ─────────────────────────────── */
+  .aurora-backdrop {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .aurora-a, .aurora-b, .aurora-c {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.16;
+    animation: aurora-drift 14s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  .aurora-a {
+    width: 620px; height: 420px;
+    background: radial-gradient(ellipse, #06b6d4 0%, transparent 70%);
+    top: -140px; left: -120px;
+    animation-delay: 0s;
+  }
+  .aurora-b {
+    width: 420px; height: 360px;
+    background: radial-gradient(ellipse, #7c3aed 0%, transparent 70%);
+    top: 80px; right: -100px;
+    animation-delay: -5s;
+  }
+  .aurora-c {
+    width: 520px; height: 300px;
+    background: radial-gradient(ellipse, #0e7490 0%, transparent 70%);
+    bottom: 200px; left: 35%;
+    animation-delay: -9s;
+  }
+  @keyframes aurora-drift {
+    0%   { transform: translate(0, 0)      scale(1); }
+    50%  { transform: translate(28px, 18px) scale(1.06); }
+    100% { transform: translate(-18px, 36px) scale(0.97); }
+  }
+
+  /* ── Content wrapper ─────────────────────────────────────── */
+  .about-wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Hero ────────────────────────────────────────────────── */
+  .ab-hero {
+    text-align: center;
+    padding: 1rem 1rem 3.5rem;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: #06b6d4;
+    margin-bottom: 1.4rem;
+  }
+  .ab-title {
+    font-family: 'Exo 2', sans-serif;
+    font-size: clamp(3rem, 10vw, 5.5rem);
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #f4f4f5;
+    text-shadow: 0 0 60px rgba(6, 182, 212, 0.22), 0 0 120px rgba(6, 182, 212, 0.08);
+    margin: 0 0 0.5rem;
+    line-height: 1;
+  }
+  .ab-title-e { color: #06b6d4; }
+  .ab-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(0.72rem, 2vw, 0.9rem);
+    color: #52525b;
+    letter-spacing: 0.06em;
+    margin: 0 0 1.8rem;
+  }
+  .ab-body-text {
+    font-size: 1rem;
+    color: #a1a1aa;
+    max-width: 580px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  /* ── Section shared ──────────────────────────────────────── */
+  .ab-section { margin-bottom: 2.75rem; }
+  .section-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    color: #3f3f46;
+    margin-bottom: 1.1rem;
+  }
+
+  /* ── Glass card (node cards) ─────────────────────────────── */
+  .node-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+  }
+  @media (max-width: 680px) {
+    .node-grid { grid-template-columns: 1fr; }
+    .glass-card { flex-direction: column; gap: 1rem; }
+  }
+  .glass-card {
+    background: rgba(24, 24, 27, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    padding: 1.75rem 1.75rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: flex;
+    gap: 1.4rem;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.13);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+  .card-icon {
+    flex-shrink: 0;
+    width: 52px; height: 52px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-icon.zinc { background: rgba(113, 113, 122, 0.1); color: #71717a; }
+  .card-icon.cyan { background: rgba(6, 182, 212, 0.1); color: #06b6d4; }
+  .card-content { flex: 1; min-width: 0; }
+  .card-node-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    color: #3f3f46;
+    margin: 0 0 0.3rem;
+  }
+  .card-title {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #e4e4e7;
+    margin: 0 0 0.15rem;
+  }
+  .card-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: #52525b;
+    margin: 0 0 0.75rem;
+    letter-spacing: 0.04em;
+  }
+  .card-body {
+    font-size: 0.85rem;
+    color: #71717a;
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  /* ── Emotion cards ───────────────────────────────────────── */
+  .emotion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+  @media (max-width: 560px) { .emotion-grid { grid-template-columns: 1fr; } }
+  .emotion-card {
+    background: rgba(24, 24, 27, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-left: 3px solid var(--ec);
+    border-radius: 12px;
+    padding: 1.2rem 1.3rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .emotion-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(
+      ellipse at top left,
+      color-mix(in srgb, var(--ec) 7%, transparent),
+      transparent 65%
+    );
+    pointer-events: none;
+  }
+  .emotion-card:hover {
+    box-shadow: 0 0 22px color-mix(in srgb, var(--ec) 16%, transparent);
+  }
+  .emotion-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px;
+    background: var(--ec);
+    box-shadow: 0 0 8px var(--ec), 0 0 18px color-mix(in srgb, var(--ec) 45%, transparent);
+    animation: edot-pulse 2.8s ease-in-out infinite;
+  }
+  @keyframes edot-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.8); }
+  }
+  .emotion-content { flex: 1; min-width: 0; }
+  .emotion-name {
+    display: block;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ec);
+    letter-spacing: 0.02em;
+    margin-bottom: 0.1rem;
+  }
+  .emotion-range {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    color: #3f3f46;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+  .emotion-body {
+    font-size: 0.8rem;
+    color: #71717a;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .emotion-mood {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: #3f3f46;
+    letter-spacing: 0.14em;
+    align-self: flex-end;
+    white-space: nowrap;
+  }
+
+  /* ── Tech stack panel ────────────────────────────────────── */
+  .glass-panel {
+    background: rgba(24, 24, 27, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 1.6rem 1.75rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .tech-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+  .tech-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #a1a1aa;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    cursor: default;
+  }
+  .tech-badge:hover {
+    border-color: rgba(6, 182, 212, 0.35);
+    color: #06b6d4;
+    background: rgba(6, 182, 212, 0.06);
+  }
+
+  /* ── Credits footer ──────────────────────────────────────── */
+  .ab-footer {
+    text-align: center;
+    color: #3f3f46;
+    font-size: 0.78rem;
+    line-height: 2.1;
+    padding: 0.75rem 0 0.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+  }
+</style>
+
