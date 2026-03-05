@@ -4,31 +4,35 @@
 import type { APIRoute } from 'astro';
 import { getDb } from '../../lib/db';
 
-export const GET: APIRoute = ({ url }) => {
+export const GET: APIRoute = async ({ url }) => {
   const limit = Math.min(parseInt(url.searchParams.get('limit') ?? '100'), 500);
   const skip  = Math.max(parseInt(url.searchParams.get('skip')  ?? '0'),   0);
 
   try {
-    const db   = getDb();
-    const rows = db.prepare(
-      'SELECT * FROM readings ORDER BY id DESC LIMIT ? OFFSET ?'
-    ).all(limit, skip) as Record<string, unknown>[];
+    const db  = await getDb();
+    const res = await db.execute({
+      sql:  'SELECT * FROM readings ORDER BY id DESC LIMIT ? OFFSET ?',
+      args: [limit, skip],
+    });
+    const countRes = await db.execute('SELECT COUNT(*) as total FROM readings');
+    const total    = Number(countRes.rows[0]?.total ?? 0);
 
-    const { total } = db.prepare('SELECT COUNT(*) as total FROM readings').get() as { total: number };
-
-    const data = rows.map(row => ({
-      readings: {
-        voltage:      row.voltage,
-        current:      row.current,
-        power:        row.power,
-        energy:       row.energy,
-        frequency:    row.frequency,
-        power_factor: row.pf,
-      },
-      state:     row.state,
-      relay:     Boolean(row.relay),
-      timestamp: new Date((row.ts as number) * 1000).toISOString(),
-    }));
+    const data = res.rows.map((row) => {
+      const r = row as Record<string, unknown>;
+      return {
+        readings: {
+          voltage:      r.voltage,
+          current:      r.current,
+          power:        r.power,
+          energy:       r.energy,
+          frequency:    r.frequency,
+          power_factor: r.pf,
+        },
+        state:     r.state,
+        relay:     Boolean(r.relay),
+        timestamp: new Date(Number(r.ts) * 1000).toISOString(),
+      };
+    });
 
     return new Response(JSON.stringify({ data, total, limit, skip }), {
       status: 200,

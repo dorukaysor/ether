@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LiveDashboard from '../components/LiveDashboard';
+---
+
+<Layout title="Home">
+  <section class="page-header">
+    <h1>Live Monitor</h1>
+    <p class="subtitle">Real-time energy readings from your ETHER Sentry unit.</p>
+  </section>
+
+  <!-- client:load makes this a React island that hydrates immediately -->
+  <div class="page-body">
+    <LiveDashboard client:load />
+  </div>
+</Layout>
+
+
+<style>
+  .page-header { margin-bottom: 0; }
+  .page-header h1 { font-size: 1.75rem; font-weight: 700; color: var(--neon-cyan); margin: 0 0 0.3rem; }
+  .page-header .subtitle { color: var(--text-muted); margin: 0; font-size: 0.9rem; }
+</style>

@@ -38,15 +38,14 @@ function rowToCfg(row: Record<string, unknown>): DeviceConfig {
   };
 }
 
-export const GET: APIRoute = ({ request }) => {
+export const GET: APIRoute = async ({ request }) => {
   const secret  = request.headers.get('x-api-secret');
   const isEsp32 = secret === import.meta.env.API_SECRET;
 
   try {
-    const db  = getDb();
-    const row = db.prepare(
-      'SELECT * FROM device_config ORDER BY id DESC LIMIT 1'
-    ).get() as Record<string, unknown> | undefined;
+    const db  = await getDb();
+    const res = await db.execute('SELECT * FROM device_config ORDER BY id DESC LIMIT 1');
+    const row = res.rows[0] as Record<string, unknown> | undefined;
 
     const cfg: DeviceConfig = row
       ? rowToCfg(row)
@@ -98,20 +97,20 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const db = getDb();
-    db.prepare(`
-      INSERT INTO device_config
-        (sampling_interval, post_interval, led_brightness, oled_timeout, warn_thresh_w, crit_thresh_w, frust_minutes)
-      VALUES
-        (@sampling_interval, @post_interval, @led_brightness, @oled_timeout, @warn_thresh_w, @crit_thresh_w, @frust_minutes)
-    `).run({
-      sampling_interval: Number(b.samplingIntervalSec ?? DEFAULTS.samplingIntervalSec),
-      post_interval:     Number(b.postIntervalSec     ?? DEFAULTS.postIntervalSec),
-      led_brightness:    Number(b.ledBrightness       ?? DEFAULTS.ledBrightness),
-      oled_timeout:      Number(b.oledTimeout          ?? DEFAULTS.oledTimeout),
-      warn_thresh_w:     Number(b.warnThreshW          ?? DEFAULTS.warnThreshW),
-      crit_thresh_w:     Number(b.critThreshW          ?? DEFAULTS.critThreshW),
-      frust_minutes:     Number(b.frustMinutes          ?? DEFAULTS.frustMinutes),
+    const db = await getDb();
+    await db.execute({
+      sql: `INSERT INTO device_config
+              (sampling_interval, post_interval, led_brightness, oled_timeout, warn_thresh_w, crit_thresh_w, frust_minutes)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        Number(b.samplingIntervalSec ?? DEFAULTS.samplingIntervalSec),
+        Number(b.postIntervalSec     ?? DEFAULTS.postIntervalSec),
+        Number(b.ledBrightness       ?? DEFAULTS.ledBrightness),
+        Number(b.oledTimeout          ?? DEFAULTS.oledTimeout),
+        Number(b.warnThreshW          ?? DEFAULTS.warnThreshW),
+        Number(b.critThreshW          ?? DEFAULTS.critThreshW),
+        Number(b.frustMinutes          ?? DEFAULTS.frustMinutes),
+      ],
     });
 
     return new Response(JSON.stringify({ ok: true }), {

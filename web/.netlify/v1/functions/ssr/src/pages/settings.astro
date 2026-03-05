@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SettingsPanel from '../components/SettingsPanel';
+---
+
+<Layout title="Settings">
+  <section class="page-header">
+    <h1>Settings</h1>
+    <p class="subtitle">Configure ETHER — mock mode, thresholds, notifications, and dashboard controls.</p>
+  </section>
+
+  <div class="page-body">
+    <SettingsPanel client:load />
+  </div>
+</Layout>
+
+
+<style>
+  .page-header { margin-bottom: 0; }
+  .page-header h1 { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 0 0 0.3rem; }
+  .page-header .subtitle { color: var(--text-muted); margin: 0; font-size: 0.9rem; }
+</style>

@@ -9,13 +9,14 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^9.5.4",
+    "@astrojs/netlify": "^6.6.4",
     "@astrojs/react": "^4.4.2",
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
     "@fortawesome/free-regular-svg-icons": "^7.2.0",
     "@fortawesome/free-solid-svg-icons": "^7.2.0",
     "@fortawesome/react-fontawesome": "^3.2.0",
     "@google/generative-ai": "^0.24.1",
+    "@libsql/client": "^0.17.0",
     "@tabler/core": "^1.4.0",
     "@tabler/icons-react": "^3.38.0",
     "@tailwindcss/vite": "^4.2.1",
@@ -23,15 +24,11 @@
     "@types/react-dom": "^19.2.3",
     "astro": "^5.17.1",
     "axios": "^1.13.6",
-    "better-sqlite3": "^12.6.2",
     "framer-motion": "^12.35.0",
     "mongodb": "^7.1.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "recharts": "^3.7.0",
     "tailwindcss": "^4.2.1"
-  },
-  "devDependencies": {
-    "@types/better-sqlite3": "^7.6.13"
   }
 }

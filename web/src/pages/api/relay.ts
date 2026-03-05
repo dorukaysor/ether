@@ -24,8 +24,11 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const db = getDb();
-    db.prepare('INSERT INTO relay_commands (state) VALUES (?)').run(b.state ? 1 : 0);
+    const db = await getDb();
+    await db.execute({
+      sql:  'INSERT INTO relay_commands (state) VALUES (?)',
+      args: [b.state ? 1 : 0],
+    });
 
     return new Response(JSON.stringify({ ok: true, relay: b.state }), {
       status: 200,
@@ -41,7 +44,7 @@ export const POST: APIRoute = async ({ request }) => {
 };
 
 // GET /api/relay  — Avatar polls for pending relay commands
-export const GET: APIRoute = ({ request }) => {
+export const GET: APIRoute = async ({ request }) => {
   const secret = request.headers.get('x-api-secret');
   if (secret !== import.meta.env.API_SECRET) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
@@ -51,19 +54,23 @@ export const GET: APIRoute = ({ request }) => {
   }
 
   try {
-    const db  = getDb();
-    const cmd = db.prepare(
+    const db  = await getDb();
+    const res = await db.execute(
       'SELECT * FROM relay_commands WHERE executed = 0 ORDER BY id DESC LIMIT 1'
-    ).get() as { id: number; state: number } | undefined;
+    );
 
-    if (!cmd) {
+    if (!res.rows.length) {
       return new Response(JSON.stringify({ pending: false }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    db.prepare('UPDATE relay_commands SET executed = 1 WHERE id = ?').run(cmd.id);
+    const cmd = res.rows[0] as Record<string, unknown>;
+    await db.execute({
+      sql:  'UPDATE relay_commands SET executed = 1 WHERE id = ?',
+      args: [cmd.id as number],
+    });
 
     return new Response(JSON.stringify({ pending: true, state: Boolean(cmd.state) }), {
       status: 200,

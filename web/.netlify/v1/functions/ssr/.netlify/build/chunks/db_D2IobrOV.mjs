@@ -1,9 +1,4 @@
-import { createClient, type Client } from '@libsql/client';
-
-declare global {
-  // eslint-disable-next-line no-var
-  var __tursoClient: Client | undefined;
-}
+import { createClient } from '@libsql/client';
 
 const SCHEMA = `
   CREATE TABLE IF NOT EXISTS readings (
@@ -36,22 +31,16 @@ const SCHEMA = `
     updated_at        INTEGER NOT NULL DEFAULT (unixepoch())
   );
 `;
-
-export async function getDb(): Promise<Client> {
+async function getDb() {
   if (globalThis.__tursoClient) return globalThis.__tursoClient;
-
-  const url   = import.meta.env.TURSO_DB_URL   as string;
-  const token = import.meta.env.TURSO_DB_TOKEN  as string;
-
-  if (!url) throw new Error('TURSO_DB_URL is not set');
-
+  const url = "libsql://ether-v1-dorukaysor.aws-ap-south-1.turso.io";
+  const token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NzI3NDc0MTMsImlkIjoiMDE5Y2JmZjctOWMwMS03M2Y5LThjNWMtOGFkMWNmYTk3NGMwIiwicmlkIjoiMDlmY2NhNDQtYWE2OC00Y2ZkLTk1ODMtNTAzMzlhNzc0NjI0In0.gNb1aajRHutDYuP-qaEvapBaYpc45G4LGm2eTjYw29_oUmJ-m39iVBZETNrpcrse1TZ9-6YZ9X6JzoLTj83ZAg";
   const client = createClient({ url, authToken: token });
-
-  // Create tables on first connection
-  for (const stmt of SCHEMA.split(';').map(s => s.trim()).filter(Boolean)) {
+  for (const stmt of SCHEMA.split(";").map((s) => s.trim()).filter(Boolean)) {
     await client.execute(stmt);
   }
-
   globalThis.__tursoClient = client;
   return client;
 }
+
+export { getDb as g };

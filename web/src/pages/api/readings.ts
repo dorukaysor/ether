@@ -16,23 +16,23 @@ function rowToDoc(row: Record<string, unknown>) {
     },
     state:     row.state,
     relay:     Boolean(row.relay),
-    timestamp: new Date((row.ts as number) * 1000).toISOString(),
+    timestamp: new Date(Number(row.ts) * 1000).toISOString(),
   };
 }
 
-export const GET: APIRoute = () => {
+export const GET: APIRoute = async () => {
   try {
-    const db  = getDb();
-    const row = db.prepare('SELECT * FROM readings ORDER BY id DESC LIMIT 1').get() as Record<string, unknown> | undefined;
+    const db  = await getDb();
+    const res = await db.execute('SELECT * FROM readings ORDER BY id DESC LIMIT 1');
 
-    if (!row) {
+    if (!res.rows.length) {
       return new Response(JSON.stringify({ error: 'No data yet' }), {
         status: 404,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    return new Response(JSON.stringify(rowToDoc(row)), {
+    return new Response(JSON.stringify(rowToDoc(res.rows[0] as Record<string, unknown>)), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -76,19 +76,20 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const db = getDb();
-    db.prepare(`
-      INSERT INTO readings (voltage, current, power, energy, frequency, pf, state, relay)
-      VALUES (@voltage, @current, @power, @energy, @frequency, @pf, @state, @relay)
-    `).run({
-      voltage:   b.voltage,
-      current:   b.current,
-      power:     b.power,
-      energy:    b.energy,
-      frequency: b.frequency,
-      pf:        b.power_factor,
-      state:     typeof b.state === 'string' ? b.state : 'idle',
-      relay:     b.relay !== false ? 1 : 0,
+    const db = await getDb();
+    await db.execute({
+      sql: `INSERT INTO readings (voltage, current, power, energy, frequency, pf, state, relay)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        b.voltage   as number,
+        b.current   as number,
+        b.power     as number,
+        b.energy    as number,
+        b.frequency as number,
+        b.power_factor as number,
+        typeof b.state === 'string' ? b.state : 'idle',
+        b.relay !== false ? 1 : 0,
+      ],
     });
 
     return new Response(JSON.stringify({ ok: true }), {

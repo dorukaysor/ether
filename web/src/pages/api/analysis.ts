@@ -114,12 +114,11 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const db   = getDb();
-    const rows = db.prepare(
+    const db   = await getDb();
+    const res  = await db.execute(
       'SELECT voltage, current, power, energy, frequency, pf as power_factor FROM readings ORDER BY id DESC LIMIT 50'
-    ).all() as Record<string, number>[];
-
-    const readings = rows.reverse();
+    );
+    const readings = (res.rows as Record<string, number>[]).reverse();
 
     if (readings.length < 3) {
       return new Response(
