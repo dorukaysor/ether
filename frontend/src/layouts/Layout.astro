@@ -1,0 +1,202 @@
+---
+import '../styles/global.css';
+import BackgroundLayer from '../components/BackgroundLayer';
+
+const { title = 'ETHER', scrollable = false, flush = false } = Astro.props;
+
+const navLinks = [
+  { href: '/',          label: 'Home',        icon: 'fa-house' },
+  { href: '/history',   label: 'History',     icon: 'fa-clock-rotate-left' },
+  { href: '/analysis',  label: 'AI Analysis', icon: 'fa-brain' },
+  { href: '/settings',  label: 'Settings',    icon: 'fa-gear' },
+  { href: '/about',     label: 'About',       icon: 'fa-circle-info' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} — ETHER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- FontAwesome 6 Free — loaded globally for all React islands -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck4w1K5lAa+0+hQR3bFNFWnhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body class={scrollable ? 'body-scroll' : ''}>
+    <!-- Background layer (fixed, behind all content) -->
+    <BackgroundLayer client:load />
+    <!-- Preloader -->
+    <div id="preloader" aria-hidden="true">
+      <div class="pl-logo"><span class="pl-e">E</span>THER</div>
+      <div class="pl-bar"><div class="pl-fill"></div></div>
+    </div>
+    <script is:inline>
+      window.addEventListener('load', function() {
+        var pl = document.getElementById('preloader');
+        if (pl) {
+          pl.classList.add('pl-done');
+          setTimeout(function() { pl.remove(); }, 500);
+        }
+      });
+    </script>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <a href="/" class="logo">
+        <span class="logo-e">E</span>THER
+      </a>
+      <ul class="nav-links">
+        {navLinks.map(link => (
+          <li>
+            <a
+              href={link.href}
+              class={`nav-link ${
+                currentPath === link.href ||
+                (link.href !== '/' && currentPath.startsWith(link.href))
+                  ? 'active' : ''
+              }`}
+            >
+              <i class={`fa-solid ${link.icon}`}></i>
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Page content -->
+    <main class={`page-content ${scrollable ? 'pc-scroll' : 'pc-fixed'} ${flush ? 'pc-flush' : ''}`}>
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 60px;
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-decoration: none;
+    color: var(--text-primary);
+  }
+  .logo-e { color: var(--neon-cyan); }
+
+  .nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s;
+  }
+  .nav-link i { font-size: 0.78rem; opacity: 0.8; }
+  .nav-link:hover { color: var(--text-primary); background: var(--bg-elevated); }
+  .nav-link.active { color: var(--neon-cyan); background: var(--bg-elevated); }
+
+  .page-content {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1.25rem 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+  .page-content.pc-fixed {
+    height: calc(100vh - 60px);
+    overflow: hidden;
+  }
+  .page-content.pc-scroll {
+    min-height: calc(100vh - 60px);
+  }
+  .page-content.pc-flush {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* ── Preloader ── */
+  #preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #0a0a0f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #preloader.pl-done {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .pl-logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: #e8e8f0;
+    opacity: 0;
+    animation: pl-fade-in 0.4s ease 0.1s forwards;
+  }
+  .pl-e { color: #00f5ff; }
+  .pl-bar {
+    width: 120px;
+    height: 2px;
+    background: #1e1e3a;
+    border-radius: 999px;
+    overflow: hidden;
+    opacity: 0;
+    animation: pl-fade-in 0.4s ease 0.2s forwards;
+  }
+  .pl-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #00f5ff, #b44fff);
+    border-radius: 999px;
+    animation: pl-slide 0.9s ease 0.3s forwards;
+  }
+  @keyframes pl-fade-in {
+    to { opacity: 1; }
+  }
+  @keyframes pl-slide {
+    to { width: 100%; }
+  }
+</style>
