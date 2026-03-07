@@ -5,22 +5,13 @@
 
 ### **Project Structure**
 
-```
-ether/
-├── core/           # ESP32 firmware (PlatformIO)
-│   ├── avatar/     # Avatar unit — WiFi, OLED, NeoPixel, HTTP POST
-│   └── sentry/     # Sentry unit — PZEM-004T, relay, ESP-NOW (no WiFi)
-│
-├── frontend/       # Astro + React dashboard → deployed to Netlify
-├── backend/        # Express + TypeScript API server → deployed to Render
-│
-├── render.yaml     # Render deployment config (backend)
-└── README.md
+```text
+
 ```
 
 ---
 
-### **Frontend:** Deployed to Netlify
+### **:** Deployed to Netlify
 
 Static Astro site with React islands. All data is fetched from the backend.
 
@@ -29,21 +20,6 @@ cd frontend
 cp .env.example .env
 npm install
 npm run dev
-```
-
-**Netlify env variable to set:**  
-`PUBLIC_API_URL=https://your-backend.onrender.com`
-
----
-
-### **Backend:** Deployed to Render
-
-Express + TypeScript REST API. Talks to Turso (libSQL), Gemini AI, and Telegram.
-```bash
-cd backend
-cp .env.example .env          # fill in all secrets
-npm install
-npm run dev                   # http://localhost:3001
 ```
 
 **Endpoints:**
