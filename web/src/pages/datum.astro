@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DatumPage from '../components/DatumPage';
+---
+
+<Layout
+  title="Ether — Datum"
+  description="Advanced system administration"
+>
+  <DatumPage client:only="react" />
+</Layout>

@@ -1,0 +1,141 @@
+---
+import LightPillar    from '../components/reactbits/LightPillar';
+import ModeIndicator  from '../components/ModeIndicator';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  scrollable?: boolean;
+}
+
+const {
+  title = 'Ether — Energy Monitor',
+  description = 'Ether: Dual-Unit IoT Energy Monitor Dashboard',
+  scrollable = false,
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+const NAV = [
+  { label: 'Home',     href: '/'         },
+  { label: 'History',  href: '/history'  },
+  { label: 'Insights', href: '/insights' },
+  { label: 'About',    href: '/about'    },
+  { label: 'Settings', href: '/settings' },
+];
+
+function isActive(href: string) {
+  const norm = (p: string) => p.replace(/\/$/, '') || '/';
+  return norm(currentPath) === norm(href);
+}
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+
+  <body class:list={[
+    'min-h-screen text-white overflow-x-hidden',
+    scrollable ? '' : 'md:h-screen md:overflow-hidden',
+  ]}>
+    <!-- Layer 0 — animated background -->
+    <LightPillar client:only="react" />
+
+    <!-- Layer 1 — header nav -->
+    <header class="fixed top-0 inset-x-0 z-50">
+      <div class="w-full px-6 py-3 flex items-center gap-4">
+
+        <!-- Wordmark (click 5× rapidly to unlock /datum admin panel) -->
+        <a
+          id="ether-logo"
+          href="/"
+          class="text-lg font-black tracking-tighter text-white/90 hover:text-white transition-colors duration-200 shrink-0"
+        >
+          ether<span data-dot class="text-cyan-400 transition-colors duration-150">.</span>
+        </a>
+
+        <!-- Nav links — centred in remaining space -->
+        <nav aria-label="Main navigation" class="flex-1 flex items-center justify-center gap-1">
+          {NAV.map(({ label, href }) => (
+            <a
+              href={href}
+              aria-current={isActive(href) ? 'page' : undefined}
+              class:list={[
+                'relative px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200',
+                isActive(href)
+                  ? 'text-white'
+                  : 'text-white/40 hover:text-white/80',
+              ]}
+            >
+              {/* Active pill background */}
+              {isActive(href) && (
+                <span
+                  aria-hidden="true"
+                  class="absolute inset-0 rounded-lg bg-white/8 border border-white/10"
+                />
+              )}
+              <span class="relative">{label}</span>
+            </a>
+          ))}
+        </nav>
+
+        <!-- Mode indicator badge -->
+        <ModeIndicator client:only="react" />
+
+      </div>
+
+      <!-- Subtle bottom separator that fades with scroll (static gradient trick) -->
+      <div class="h-px bg-gradient-to-r from-transparent via-white/8 to-transparent" />
+    </header>
+
+    <!-- Layer 2 — page content (pt-20 clears the fixed header) -->
+    <div class:list={[
+      'relative z-10 pt-20',
+      scrollable ? 'min-h-screen' : 'min-h-screen md:h-screen md:overflow-hidden',
+    ]}>
+      <slot />
+    </div>
+
+    <!-- 5-click easter egg: unlock /datum admin panel -->
+    <script is:inline>
+      (function () {
+        var clicks = 0;
+        var timer  = null;
+        function init() {
+          var el = document.getElementById('ether-logo');
+          if (!el) return;
+          el.addEventListener('click', function (e) {
+            e.preventDefault();
+            clicks++;
+            clearTimeout(timer);
+            var dot = el.querySelector('[data-dot]');
+            if (dot) {
+              dot.style.color = '#f59e0b';
+              setTimeout(function () { dot.style.color = ''; }, 180);
+            }
+            if (clicks >= 5) {
+              clicks = 0;
+              window.location.href = '/datum';
+            } else {
+              timer = setTimeout(function () { clicks = 0; }, 2500);
+            }
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else {
+          init();
+        }
+      })();
+    </script>
+  </body>
+</html>

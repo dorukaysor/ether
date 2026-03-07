@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-black text-white antialiased;
+  }
+
+  /* Hide scrollbars everywhere while keeping scroll functionality */
+  * {
+    scrollbar-width: none;        /* Firefox */
+    -ms-overflow-style: none;     /* IE / Edge legacy */
+  }
+  *::-webkit-scrollbar {
+    display: none;                /* Chrome / Safari / Webkit */
+  }
+}
+
+@layer components {
+  /* Reusable glass card — used throughout the dashboard */
+  .glass-card {
+    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl;
+  }
+
+  /* Frosted glass header bar */
+  header {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}

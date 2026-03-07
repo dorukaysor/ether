@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HistoryPage from '../components/HistoryPage';
+---
+
+<Layout title="Ether — History" description="Full energy reading history and analytics" scrollable={true}>
+  <HistoryPage client:only="react" />
+</Layout>
