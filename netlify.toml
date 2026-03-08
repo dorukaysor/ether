@@ -2,3 +2,9 @@
   base    = "web"
   command = "npm run build"
   publish = "dist"
+
+# Suppress false-positive secrets scanning hits.
+# PORT=3000 triggers on package-lock.json; ADMIN_USERNAME=ether triggers on
+# every brand name occurrence in the codebase. Neither value is a real secret.
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "PORT,ADMIN_USERNAME"
