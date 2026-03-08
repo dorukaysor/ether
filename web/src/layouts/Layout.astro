@@ -131,13 +131,15 @@ function isActive(href: string) {
       <div class="w-full px-6 py-3 flex items-center gap-4">
 
         <!-- Wordmark (click 5× rapidly to unlock /datum admin panel) -->
-        <a
+        <span
           id="ether-logo"
-          href="/"
-          class="text-lg font-black tracking-tighter text-white/90 hover:text-white transition-colors duration-200 shrink-0"
+          role="link"
+          tabindex="0"
+          aria-label="ether — click 5 times for admin"
+          class="text-lg font-black tracking-tighter text-white/90 hover:text-white transition-colors duration-200 shrink-0 cursor-pointer select-none"
         >
           ether<span data-dot class="text-cyan-400 transition-colors duration-150">.</span>
-        </a>
+        </span>
 
         <!-- Nav links — centred in remaining space -->
         <nav aria-label="Main navigation" class="flex-1 flex items-center justify-center gap-1">
@@ -258,24 +260,28 @@ function isActive(href: string) {
       (function () {
         var clicks = 0;
         var timer  = null;
+        function handleActivate() {
+          clicks++;
+          clearTimeout(timer);
+          var el  = document.getElementById('ether-logo');
+          var dot = el ? el.querySelector('[data-dot]') : null;
+          if (dot) {
+            dot.style.color = '#f59e0b';
+            setTimeout(function () { dot.style.color = ''; }, 180);
+          }
+          if (clicks >= 5) {
+            clicks = 0;
+            window.location.href = '/datum';
+          } else {
+            timer = setTimeout(function () { clicks = 0; }, 2500);
+          }
+        }
         function init() {
           var el = document.getElementById('ether-logo');
           if (!el) return;
-          el.addEventListener('click', function (e) {
-            e.preventDefault();
-            clicks++;
-            clearTimeout(timer);
-            var dot = el.querySelector('[data-dot]');
-            if (dot) {
-              dot.style.color = '#f59e0b';
-              setTimeout(function () { dot.style.color = ''; }, 180);
-            }
-            if (clicks >= 5) {
-              clicks = 0;
-              window.location.href = '/datum';
-            } else {
-              timer = setTimeout(function () { clicks = 0; }, 2500);
-            }
+          el.addEventListener('click', handleActivate);
+          el.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') handleActivate();
           });
         }
         if (document.readyState === 'loading') {
