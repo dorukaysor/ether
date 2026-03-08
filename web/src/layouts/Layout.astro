@@ -71,11 +71,6 @@ function isActive(href: string) {
         0%,100% { opacity:.5; transform:scale(1); }
         50%     { opacity:1;  transform:scale(1.15); }
       }
-      /* Slide page transitions */
-      @keyframes ether-slide-out { to   { transform:translateX(-4vw); opacity:0; } }
-      @keyframes ether-slide-in  { from { transform:translateX( 4vw); opacity:0; } }
-      ::view-transition-old(root) { animation: 280ms cubic-bezier(.4,0,.2,1) both ether-slide-out; }
-      ::view-transition-new(root) { animation: 280ms cubic-bezier(.4,0,.2,1) both ether-slide-in;  }
     </style>
 
     <!-- Set data-firstload before body renders — only on real hard loads -->
