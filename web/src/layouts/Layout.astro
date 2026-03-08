@@ -186,6 +186,78 @@ function isActive(href: string) {
       <slot />
     </div>
 
+    <!-- Soft-navigation preloader —————————————————————————————————————————
+         Runs once; listens to Astro ViewTransitions lifecycle events.
+         Injects the ether. preloader into the NEW document before the body
+         swap so it survives the DOM replacement and is removed once the
+         new page is fully ready.
+    ——————————————————————————————————————————————————————————————————————-->
+    <script>
+      (function () {
+        var _iv: ReturnType<typeof setInterval> | null = null;
+        var _pct = 0;
+
+        function mkPl(): HTMLDivElement {
+          var pl = document.createElement('div');
+          pl.id  = 'ether-nav-pl';
+          pl.setAttribute('aria-hidden', 'true');
+          pl.style.cssText =
+            'position:fixed;inset:0;z-index:99999;background:#000;' +
+            'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;' +
+            'transition:opacity .35s ease;';
+          pl.innerHTML =
+            '<div style="font-size:2rem;font-weight:900;letter-spacing:-0.05em;' +
+              'color:rgba(255,255,255,.9);animation:plPulse 1.6s ease-in-out infinite">' +
+              'ether<span style="color:#22d3ee">.</span></div>' +
+            '<div style="width:160px;height:2px;background:rgba(255,255,255,.08);border-radius:9999px;overflow:hidden">' +
+              '<div id="ether-nav-bar" style="height:100%;background:#22d3ee;border-radius:9999px;width:0%;transition:width .2s ease"></div>' +
+            '</div>';
+          return pl;
+        }
+
+        // Navigation start — inject preloader into current body
+        document.addEventListener('astro:before-preparation', function () {
+          if (document.documentElement.hasAttribute('data-firstload')) return;
+          if (_iv !== null) clearInterval(_iv);
+          _pct = 0;
+          document.getElementById('ether-nav-pl')?.remove();
+          document.body.appendChild(mkPl());
+          _iv = setInterval(function () {
+            _pct = Math.min(_pct + Math.random() * 14, 82);
+            var b = document.getElementById('ether-nav-bar');
+            if (b) b.style.width = _pct + '%';
+          }, 110);
+        });
+
+        // Just before body swap — clone preloader into incoming document so it survives
+        document.addEventListener('astro:before-swap', function (e) {
+          if (_iv !== null) clearInterval(_iv);
+          var pl  = document.getElementById('ether-nav-pl');
+          if (!pl) return;
+          var bar = document.getElementById('ether-nav-bar');
+          var w   = bar ? bar.style.width : _pct + '%';
+          var clone    = pl.cloneNode(true) as HTMLElement;
+          var cloneBar = clone.querySelector<HTMLElement>('#ether-nav-bar');
+          if (cloneBar) cloneBar.style.width = w;
+          (e as any).newDocument.body.appendChild(clone);
+          pl.remove();
+        });
+
+        // New page ready — complete bar, fade out, remove
+        document.addEventListener('astro:page-load', function () {
+          var pl  = document.getElementById('ether-nav-pl');
+          if (!pl) return;
+          var bar = document.getElementById('ether-nav-bar');
+          if (bar) bar.style.width = '100%';
+          var captured = pl;
+          setTimeout(function () {
+            captured.style.opacity = '0';
+            setTimeout(function () { captured.remove(); }, 380);
+          }, 160);
+        });
+      })();
+    </script>
+
     <!-- 5-click easter egg: unlock /datum admin panel -->
     <script is:inline>
       (function () {

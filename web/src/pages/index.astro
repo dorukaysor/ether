@@ -4,29 +4,5 @@ import HomeDashboard from '../components/HomeDashboard';
 ---
 
 <Layout title="Ether — Home" description="Ether live energy dashboard">
-  <!--
-    The loading div is visible BEFORE React hydrates.
-    Once HomeDashboard mounts, React replaces this placeholder.
-    If you still see this after a few seconds, open DevTools → Console
-    and look for JS errors.
-  -->
-  <div id="home-loading" class="flex flex-col items-center justify-center min-h-screen gap-4">
-    <div class="w-10 h-10 rounded-full border-2 border-cyan-400/30 border-t-cyan-400 animate-spin" />
-    <p class="text-white/30 text-sm tracking-widest uppercase">Loading dashboard…</p>
-  </div>
-
   <HomeDashboard client:only="react" />
 </Layout>
-
-<script>
-  // Hide the loading spinner as soon as HomeDashboard's root div appears in the DOM.
-  const observer = new MutationObserver(() => {
-    const dash = document.querySelector('[data-hd-root]');
-    if (dash) {
-      const loader = document.getElementById('home-loading');
-      if (loader) loader.style.display = 'none';
-      observer.disconnect();
-    }
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-</script>

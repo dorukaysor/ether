@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import LightPillar from '../components/reactbits/LightPillar';
 
 const STACK = [
   { name: 'Astro 5',        role: 'Web framework',       color: 'text-orange-400', bg: 'bg-orange-400' },
@@ -28,7 +29,10 @@ const FLOW = [
   description="About the Ether dual-unit IoT energy monitor"
   scrollable={true}
 >
-  <div class="max-w-3xl mx-auto px-6 pb-20 space-y-20">
+  <!-- Dedicated LightPillar background for the About page -->
+  <LightPillar client:only="react" />
+
+  <div class="max-w-3xl mx-auto px-6 pb-20 space-y-20 relative z-10">
 
     <!-- ── Hero ─────────────────────────────────────────────── -->
     <section class="pt-10 text-center space-y-5">
