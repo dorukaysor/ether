@@ -171,9 +171,9 @@ export default function SettingsPage() {
   const [relayBusy,      setRelayBusy]      = useState(false);
   const [dataMode,       setDataModeState]  = useState<DataMode>('live');
   const [envStatus,      setEnvStatus]      = useState({
-    TURSO_DATABASE_URL: false,
-    TURSO_AUTH_TOKEN:   false,
-    GEMINI_API_KEY:     false,
+    TURSO_URL:   false,
+    TURSO_TOKEN: false,
+    GEMINI_KEY:  false,
   });
 
   useEffect(() => {
@@ -424,9 +424,9 @@ export default function SettingsPage() {
           </Card>
 
           <Card title="Environment" accentColor="#eab308" className="flex-1">
-            <EnvBadge label="Turso URL" set={envStatus.TURSO_DATABASE_URL} />
-            <EnvBadge label="Turso Token"   set={envStatus.TURSO_AUTH_TOKEN}   />
-            <EnvBadge label="Gemini API Key"     set={envStatus.GEMINI_API_KEY}     />
+            <EnvBadge label="Turso URL"   set={envStatus.TURSO_URL}   />
+            <EnvBadge label="Turso Token" set={envStatus.TURSO_TOKEN} />
+            <EnvBadge label="Gemini Key"  set={envStatus.GEMINI_KEY}  />
             <p className="text-white/15 text-[10px] mt-3 leading-relaxed">
               Set in <code className="font-mono">/web/.env</code>. Restart dev server after changes.
             </p>
