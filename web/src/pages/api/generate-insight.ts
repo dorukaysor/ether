@@ -75,9 +75,16 @@ export const POST: APIRoute = async () => {
 
     const prompt = buildPrompt(rows);
 
-    // Call Gemini 1.5 Pro.
+    // Use the model saved in config, fall back to gemini-2.0-flash.
+    const modelRow = await db.execute({
+      sql:  `SELECT value FROM config WHERE key = 'gemini_model' LIMIT 1`,
+      args: [],
+    });
+    const modelName = (modelRow.rows[0]?.value as string | undefined) ?? 'gemini-2.0-flash';
+
+    // Call Gemini.
     const genAI  = new GoogleGenerativeAI(geminiKey);
-    const model  = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+    const model  = genAI.getGenerativeModel({ model: modelName });
     const result2 = await model.generateContent(prompt);
     const content = result2.response.text().trim();
 

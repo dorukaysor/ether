@@ -17,7 +17,7 @@ const DEFAULTS: Record<string, string> = {
   // datum admin defaults
   db_max_records:         '5000',
   prune_days:             '90',
-  gemini_model:           'gemini-2.0-flash-exp',
+  gemini_model:           'gemini-2.0-flash',
   insight_context_size:   '50',
 };
 
