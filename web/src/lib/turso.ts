@@ -2,9 +2,9 @@ import { createClient } from '@libsql/client';
 import type { Client as LibSQLClient } from '@libsql/client';
 
 function makeClient(): LibSQLClient {
-  const url = import.meta.env.TURSO_DATABASE_URL as string | undefined;
-  const authToken = import.meta.env.TURSO_AUTH_TOKEN as string | undefined;
-  if (!url) throw new Error('TURSO_DATABASE_URL is not set in .env');
+  const url       = (import.meta.env.TURSO_URL   || process.env.TURSO_URL)   as string | undefined;
+  const authToken = (import.meta.env.TURSO_TOKEN || process.env.TURSO_TOKEN) as string | undefined;
+  if (!url) throw new Error('TURSO_URL is not set');
   return createClient({ url, authToken });
 }
 

@@ -34,7 +34,7 @@ import { getDataMode, type DataMode } from '../lib/mockData';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 type Settings  = Record<string, string>;
-type EnvStatus = { TURSO_DATABASE_URL: boolean; TURSO_AUTH_TOKEN: boolean; GEMINI_API_KEY: boolean };
+type EnvStatus = { TURSO_URL: boolean; TURSO_TOKEN: boolean; GEMINI_KEY: boolean };
 type DbStats   = { energyLogCount: number; configCount: number };
 
 // ── Glass card ────────────────────────────────────────────────────────────────
@@ -216,7 +216,7 @@ const GEMINI_MODELS = [
 
 export default function DatumPage() {
   const [settings,        setSettings]        = useState<Settings>({});
-  const [envStatus,       setEnvStatus]       = useState<EnvStatus>({ TURSO_DATABASE_URL: false, TURSO_AUTH_TOKEN: false, GEMINI_API_KEY: false });
+  const [envStatus,       setEnvStatus]       = useState<EnvStatus>({ TURSO_URL: false, TURSO_TOKEN: false, GEMINI_KEY: false });
   const [dbStats,         setDbStats]         = useState<DbStats | null>(null);
   const [dataMode,        setDataModeUI]      = useState<DataMode>('live');
   const [loading,         setLoading]         = useState(true);
@@ -448,9 +448,9 @@ export default function DatumPage() {
             </>
           )}
           <p className="text-[10px] uppercase tracking-widest text-white/20 mt-3 mb-1">Environment Variables</p>
-          <EnvBadge label="Turso URL" set={envStatus.TURSO_DATABASE_URL} />
-          <EnvBadge label="Turso Token"   set={envStatus.TURSO_AUTH_TOKEN}   />
-          <EnvBadge label="Gemini API Key"     set={envStatus.GEMINI_API_KEY}     />
+          <EnvBadge label="Turso URL"     set={envStatus.TURSO_URL}   />
+          <EnvBadge label="Turso Token"   set={envStatus.TURSO_TOKEN} />
+          <EnvBadge label="Gemini Key"    set={envStatus.GEMINI_KEY}  />
         </Card>
 
         {/* ── 2. ESP32 Configuration ──────────────────────────────────── */}

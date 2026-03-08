@@ -45,9 +45,9 @@ Write the insight now:`;
 // ── Route ─────────────────────────────────────────────────────────────────────
 
 export const POST: APIRoute = async () => {
-  const geminiKey = import.meta.env.GEMINI_API_KEY as string | undefined;
+  const geminiKey = (import.meta.env.GEMINI_KEY || process.env.GEMINI_KEY) as string | undefined;
   if (!geminiKey) {
-    return json({ error: 'GEMINI_API_KEY is not configured' }, 503);
+    return json({ error: 'GEMINI_KEY is not configured' }, 503);
   }
 
   try {

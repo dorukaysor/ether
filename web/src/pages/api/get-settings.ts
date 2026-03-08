@@ -24,9 +24,9 @@ const DEFAULTS: Record<string, string> = {
 export const GET: APIRoute = async (ctx) => {
   // Env-var presence flags — we only expose a boolean, never the values.
   const env = {
-    TURSO_DATABASE_URL: Boolean(ctx.locals.runtime?.env?.TURSO_DATABASE_URL ?? import.meta.env.TURSO_DATABASE_URL),
-    TURSO_AUTH_TOKEN:   Boolean(ctx.locals.runtime?.env?.TURSO_AUTH_TOKEN   ?? import.meta.env.TURSO_AUTH_TOKEN),
-    GEMINI_API_KEY:     Boolean(ctx.locals.runtime?.env?.GEMINI_API_KEY     ?? import.meta.env.GEMINI_API_KEY),
+    TURSO_URL:   Boolean(ctx.locals.runtime?.env?.TURSO_URL   ?? import.meta.env.TURSO_URL   ?? process.env.TURSO_URL),
+    TURSO_TOKEN: Boolean(ctx.locals.runtime?.env?.TURSO_TOKEN ?? import.meta.env.TURSO_TOKEN ?? process.env.TURSO_TOKEN),
+    GEMINI_KEY:  Boolean(ctx.locals.runtime?.env?.GEMINI_KEY  ?? import.meta.env.GEMINI_KEY  ?? process.env.GEMINI_KEY),
   };
 
   try {
