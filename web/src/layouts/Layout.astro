@@ -1,4 +1,5 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
 import LightPillar    from '../components/reactbits/LightPillar';
 import ModeIndicator  from '../components/ModeIndicator';
 import '../styles/global.css';
@@ -41,12 +42,92 @@ function isActive(href: string) {
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
+
+    <style is:inline>
+      /* Preloader — hidden unless html has data-firstload attribute */
+      #ether-preloader {
+        display: none;
+        position: fixed; inset: 0; z-index: 99999;
+        background: #000;
+        flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+        transition: opacity .4s ease;
+      }
+      html[data-firstload] #ether-preloader { display: flex; }
+      #ether-preloader .pl-logo {
+        font-size: 2rem; font-weight: 900; letter-spacing: -0.05em;
+        color: rgba(255,255,255,.9);
+        animation: plPulse 1.6s ease-in-out infinite;
+      }
+      #ether-preloader .pl-logo span { color: #22d3ee; }
+      #ether-preloader .pl-track {
+        width: 160px; height: 2px;
+        background: rgba(255,255,255,.08); border-radius: 9999px; overflow: hidden;
+      }
+      #ether-preloader .pl-bar {
+        height: 100%; background: #22d3ee; border-radius: 9999px;
+        width: 0; transition: width .25s ease;
+      }
+      @keyframes plPulse {
+        0%,100% { opacity:.5; transform:scale(1); }
+        50%     { opacity:1;  transform:scale(1.15); }
+      }
+      /* Slide page transitions */
+      @keyframes ether-slide-out { to   { transform:translateX(-4vw); opacity:0; } }
+      @keyframes ether-slide-in  { from { transform:translateX( 4vw); opacity:0; } }
+      ::view-transition-old(root) { animation: 280ms cubic-bezier(.4,0,.2,1) both ether-slide-out; }
+      ::view-transition-new(root) { animation: 280ms cubic-bezier(.4,0,.2,1) both ether-slide-in;  }
+    </style>
+
+    <!-- Set data-firstload before body renders — only on real hard loads -->
+    <script is:inline>
+      if (!sessionStorage.getItem('ether-pl-done')) {
+        document.documentElement.setAttribute('data-firstload', '');
+      }
+    </script>
+
+    <ViewTransitions />
   </head>
 
   <body class:list={[
     'min-h-screen text-white overflow-x-hidden',
     scrollable ? '' : 'md:h-screen md:overflow-hidden',
   ]}>
+
+    <!-- Preloader — only appears on first hard load, hidden on soft-nav via CSS -->
+    <div id="ether-preloader" role="presentation" aria-hidden="true">
+      <div class="pl-logo">ether<span>.</span></div>
+      <div class="pl-track"><div class="pl-bar" id="ether-pl-bar"></div></div>
+    </div>
+    <script is:inline>
+      (function () {
+        var hasFL = document.documentElement.hasAttribute('data-firstload');
+        var pl    = document.getElementById('ether-preloader');
+        var bar   = document.getElementById('ether-pl-bar');
+        if (!hasFL) { if (pl) pl.remove(); return; }
+        var pct = 0;
+        var iv  = setInterval(function () {
+          pct = Math.min(pct + Math.random() * 12, 78);
+          if (bar) bar.style.width = pct + '%';
+        }, 120);
+        function finish() {
+          clearInterval(iv);
+          if (bar) bar.style.width = '100%';
+          setTimeout(function () {
+            if (pl) {
+              pl.style.opacity = '0';
+              setTimeout(function () {
+                pl.remove();
+                document.documentElement.removeAttribute('data-firstload');
+              }, 400);
+            }
+          }, 200);
+          sessionStorage.setItem('ether-pl-done', '1');
+        }
+        if (document.readyState === 'complete') { finish(); }
+        else { window.addEventListener('load', finish, { once: true }); }
+      })();
+    </script>
+
     <!-- Layer 0 — animated background -->
     <LightPillar client:only="react" />
 

@@ -1,10 +1,196 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const STACK = [
+  { name: 'Astro 5',        role: 'Web framework',       color: 'text-orange-400', bg: 'bg-orange-400' },
+  { name: 'React 18',       role: 'UI components',        color: 'text-cyan-400',   bg: 'bg-cyan-400'   },
+  { name: 'TursoDB',        role: 'Edge database',        color: 'text-emerald-400',bg: 'bg-emerald-400'},
+  { name: 'Gemini AI',      role: 'Energy insights',      color: 'text-purple-400', bg: 'bg-purple-400' },
+  { name: 'Tailwind CSS',   role: 'Styling',              color: 'text-sky-400',    bg: 'bg-sky-400'    },
+  { name: 'Recharts',       role: 'Data visualisation',   color: 'text-pink-400',   bg: 'bg-pink-400'   },
+  { name: 'PlatformIO',     role: 'Firmware toolchain',   color: 'text-amber-400',  bg: 'bg-amber-400'  },
+  { name: 'Netlify',        role: 'Hosting + edge SSR',   color: 'text-teal-400',   bg: 'bg-teal-400'   },
+];
+
+const FLOW = [
+  { label: 'PZEM-004T',   sub: 'AC sensor'       },
+  { label: 'ESP32',       sub: 'firmware'         },
+  { label: 'Wi-Fi',       sub: 'HTTP POST'        },
+  { label: 'Netlify API', sub: 'edge function'    },
+  { label: 'TursoDB',     sub: 'persistence'      },
+  { label: 'Dashboard',   sub: 'live HUD'         },
+  { label: 'Gemini',      sub: 'AI insight'       },
+];
 ---
 
-<Layout title="Ether — About">
-  <main class="max-w-4xl mx-auto px-4 pt-16">
-    <h1 class="text-5xl font-black tracking-tighter text-white mb-4">About Ether</h1>
-    <p class="text-white/40 text-lg">Coming in Step 3 — BlurText, GlareHover cards, full hardware explainer.</p>
-  </main>
+<Layout
+  title="Ether — About"
+  description="About the Ether dual-unit IoT energy monitor"
+  scrollable={true}
+>
+  <div class="max-w-3xl mx-auto px-6 pb-20 space-y-20">
+
+    <!-- ── Hero ─────────────────────────────────────────────── -->
+    <section class="pt-10 text-center space-y-5">
+      <div class="text-7xl font-black tracking-tighter text-white/90 select-none">
+        ether<span class="text-cyan-400">.</span>
+      </div>
+      <p class="text-lg text-white/40 font-light tracking-widest uppercase text-sm">
+        Dual-unit IoT energy intelligence
+      </p>
+      <p class="text-white/35 max-w-md mx-auto leading-relaxed text-sm">
+        A self-hosted real-time energy monitoring system powered by two ESP32 units,
+        PZEM-004T current sensors, Turso edge database, and Gemini AI —
+        built to understand how power is consumed, not just measure it.
+      </p>
+      <div class="h-px w-24 mx-auto bg-gradient-to-r from-transparent via-white/15 to-transparent mt-2"></div>
+    </section>
+
+    <!-- ── The Two Units ─────────────────────────────────────── -->
+    <section class="space-y-4">
+      <p class="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/25">The Units</p>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="glass-card p-6 space-y-3 hover:bg-white/8 transition-colors duration-300">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-base shrink-0">
+              🛰️
+            </div>
+            <div>
+              <div class="font-bold text-white tracking-wide">Avatar</div>
+              <div class="text-xs text-cyan-400/60 tracking-widest uppercase">Sub-circuit monitor</div>
+            </div>
+          </div>
+          <p class="text-sm text-white/35 leading-relaxed">
+            Monitors individual appliances or rooms. Measures voltage, current, watts,
+            energy, frequency, and power factor in real time. Named <em class="not-italic text-white/50">Avatar</em> —
+            it embodies what's happening at the load level, moment to moment.
+          </p>
+        </div>
+
+        <div class="glass-card p-6 space-y-3 hover:bg-white/8 transition-colors duration-300">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-base shrink-0">
+              🔭
+            </div>
+            <div>
+              <div class="font-bold text-white tracking-wide">Sentry</div>
+              <div class="text-xs text-amber-400/60 tracking-widest uppercase">Main breaker monitor</div>
+            </div>
+          </div>
+          <p class="text-sm text-white/35 leading-relaxed">
+            Sits at the main distribution board, watching total building load.
+            Named <em class="not-italic text-white/50">Sentry</em> — it guards the boundary.
+            Triggers relay cutoff when wattage exceeds a safe threshold.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Hardware ──────────────────────────────────────────── -->
+    <section class="space-y-4">
+      <p class="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/25">Hardware</p>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="glass-card p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-white">ESP32</span>
+            <span class="text-[10px] tracking-widest uppercase text-white/20 bg-white/5 px-2 py-0.5 rounded-full border border-white/8">
+              Microcontroller
+            </span>
+          </div>
+          <ul class="text-sm text-white/35 space-y-2">
+            <li class="flex gap-2.5"><span class="text-cyan-400/50 shrink-0">→</span>Dual-core 240 MHz Xtensa LX6</li>
+            <li class="flex gap-2.5"><span class="text-cyan-400/50 shrink-0">→</span>Built-in Wi-Fi 802.11 b/g/n</li>
+            <li class="flex gap-2.5"><span class="text-cyan-400/50 shrink-0">→</span>OTA firmware update support</li>
+            <li class="flex gap-2.5"><span class="text-cyan-400/50 shrink-0">→</span>UART / I²C / SPI / GPIO</li>
+            <li class="flex gap-2.5"><span class="text-cyan-400/50 shrink-0">→</span>PlatformIO + Arduino framework</li>
+          </ul>
+        </div>
+
+        <div class="glass-card p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-white">PZEM-004T v3</span>
+            <span class="text-[10px] tracking-widest uppercase text-white/20 bg-white/5 px-2 py-0.5 rounded-full border border-white/8">
+              Energy sensor
+            </span>
+          </div>
+          <ul class="text-sm text-white/35 space-y-2">
+            <li class="flex gap-2.5"><span class="text-amber-400/50 shrink-0">→</span>Voltage: 80 – 260 V AC</li>
+            <li class="flex gap-2.5"><span class="text-amber-400/50 shrink-0">→</span>Current: 0 – 100 A</li>
+            <li class="flex gap-2.5"><span class="text-amber-400/50 shrink-0">→</span>Power: 0 – 23 kW</li>
+            <li class="flex gap-2.5"><span class="text-amber-400/50 shrink-0">→</span>Frequency: 45 – 65 Hz</li>
+            <li class="flex gap-2.5"><span class="text-amber-400/50 shrink-0">→</span>UART protocol @ 9600 baud</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Software Stack ─────────────────────────────────────── -->
+    <section class="space-y-4">
+      <p class="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/25">Software Stack</p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {STACK.map(({ name, role, color, bg }) => (
+          <div class="glass-card p-4 flex items-center gap-3 hover:bg-white/8 transition-colors duration-300">
+            <div class={`w-2 h-2 rounded-full shrink-0 ${bg} opacity-70`}></div>
+            <div>
+              <div class={`text-sm font-semibold ${color}`}>{name}</div>
+              <div class="text-[11px] text-white/25">{role}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── Data Flow ────────────────────────────────────────────── -->
+    <section class="space-y-4">
+      <p class="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/25">Data Flow</p>
+      <div class="glass-card p-6">
+        <div class="flex flex-wrap items-center justify-center gap-y-4 gap-x-2 text-center">
+          {FLOW.map(({ label, sub }, i) => (
+            <>
+              <div>
+                <div class="text-sm font-medium text-white/70">{label}</div>
+                <div class="text-[10px] tracking-widest uppercase text-white/20 mt-0.5">{sub}</div>
+              </div>
+              {i < FLOW.length - 1 && (
+                <span class="text-white/15 text-base select-none px-1">→</span>
+              )}
+            </>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Emotional States ────────────────────────────────────── -->
+    <section class="space-y-4">
+      <p class="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/25">Emotive States</p>
+      <p class="text-sm text-white/30 leading-relaxed">
+        Ether maps live wattage to an emotional state — the dashboard shifts colour and feel alongside
+        actual power draw, giving you an intuitive sense of load before you read any numbers.
+      </p>
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+        {[
+          { state: 'Idle',       range: '50–300 W',     color: 'text-cyan-400',   border: 'border-cyan-500/20',   bg: 'bg-cyan-500/5'   },
+          { state: 'Happy',      range: 'Watts ↓ drop', color: 'text-pink-400',   border: 'border-pink-500/20',   bg: 'bg-pink-500/5'   },
+          { state: 'Dizzy',      range: 'Spike / surge',color: 'text-yellow-400', border: 'border-yellow-500/20', bg: 'bg-yellow-500/5' },
+          { state: 'Frustrated', range: '>1000 W 15 min',color:'text-purple-400', border: 'border-purple-500/20', bg: 'bg-purple-500/5' },
+          { state: 'Angry',      range: '>2500 W',      color: 'text-red-400',    border: 'border-red-500/20',    bg: 'bg-red-500/5'    },
+        ].map(({ state, range, color, border, bg }) => (
+          <div class={`glass-card ${bg} border ${border} p-3 text-center space-y-1`}>
+            <div class={`text-sm font-bold ${color}`}>{state}</div>
+            <div class="text-[11px] text-white/25">{range}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ── Footer ────────────────────────────────────────────── -->
+    <div class="text-center text-white/15 text-xs tracking-widest uppercase py-4">
+      built with intention &nbsp;·&nbsp; monitored with precision
+    </div>
+
+  </div>
 </Layout>
